@@ -6,36 +6,42 @@
 # - Directory structure with hidden files shown
 # - Contents of each file, labeled by filename
 # - Formatted as code blocks to avoid need for escaping quotes
+# Handy, mostly perfect function for quickly allowing a text paste-dump to a llm. 
+# TODO - Desperately needs to respect .gitignore
 
-CODEPATH="$1"
+_cat-for-ai() {
+    # Loop over all arguments
+    for argval in "$@"; do
+        # Check if the argval is a directory
+        if [ -d "$argval" ]; then
+            # print the structure of directories
+            echo "Directory Structure:"
+            echo
+            echo "\`\`\`"
+            tree -a "$argval"
+            echo "\`\`\`"
+            echo
 
-# Print directory structure
-echo "Directory Structure ($CODEPATH):"
-echo
-echo "\`\`\`"
-# Print tree output with hidden files shown
-tree -a "$CODEPATH"
-echo "\`\`\`"
-
-echo
-
-# Loop through all files recursively
-for file in $(find "$CODEPATH" -type f -not -path '*.git*'); do
-
-    # Print filename
-    echo "File Contents of $file:"
-    echo "\`\`\`"
-
-    # Print file contents
-    # Use heredoc to avoid escaping quotes
-    cat <<EOF
-$(cat "$file")
-EOF
-
-    echo
-    echo "\`\`\`"
-    echo
-
-done
+            # cats all the local files, names them, and quotes them using proper-ish syntax
+            for file in $(find "$argval" -type f -not -path '*.git*'); do
+                echo "\`\`\`$file:"
+                cat "$file"
+                echo
+                echo "\`\`\`"
+                echo
+            done
+        # Check if the path is a file
+        elif [ -f "$argval" ]; then
+			echo
+            echo "\`\`\`$argval:"
+            cat "$argval"
+            echo
+            echo "\`\`\`"
+            echo
+        else
+            echo "$argval is not a valid file or directory"
+        fi
+    done
+}
 
 # print_codebase_context ~/myproject
