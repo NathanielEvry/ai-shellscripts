@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+# ai-dad-joke-rater.sh v1.0.0
+# Created by Nathaniel Evry for https://github.com/NathanielEvry/ai-shellscripts
+# simplistic example of AI calling AI with forced-subshells.
+
 # IDK what could YOU do with sub-shell ai??  - x.com/NathanielEvry
 prompt_1='Please write me a list of your 3 worst one-line dad jokes!'
 prompt_2='Hey, could you rate this terrible dad joke for me? '
